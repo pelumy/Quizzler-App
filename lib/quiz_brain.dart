@@ -31,6 +31,10 @@ class QuizBrain {
         true),
   ];
 
+  int getQuestionNumber() {
+    return _questionNumber;
+  }
+
   void nextQuestion() {
     if (_questionNumber < _questionBank.length - 1) {
       _questionNumber++;
@@ -43,5 +47,9 @@ class QuizBrain {
 
   bool getQuestionAnswer() {
     return _questionBank[_questionNumber].questionAnswer;
+  }
+
+  int getNumberOfQuestions() {
+    return _questionBank.length;
   }
 }

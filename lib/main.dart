@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -30,6 +32,32 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
 
   List<Icon> scoreKeeper = [];
+  void checkAnswer(bool userPickedAnswer) {
+    int questionNumber = quizBrain.getQuestionNumber();
+    if (questionNumber == quizBrain.getNumberOfQuestions()) {
+      // The easiest way for creating RFlutter Alert
+      _onBasicAlertPressed(context) {
+        Alert(
+          context: context,
+          title: "Game Ended",
+          desc: "You have reached the end of the quiz.",
+        ).show();
+      }
+      questionNumber = 0;
+    }else {
+      bool correctAnswer = quizBrain.getQuestionAnswer();
+      if (userPickedAnswer == correctAnswer) {
+        setState(() {
+          scoreKeeper.add(Icon(Icons.check, color: Colors.green,),);
+        });
+      } else{
+        setState(() {
+          scoreKeeper.add(Icon(Icons.close, color: Colors.red,),);
+        });
+      }
+      changeQuestionNumber();
+    }
+  }
 
   void changeQuestionNumber() {
     setState(() {
@@ -74,18 +102,8 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-                if (correctAnswer == true) {
-                  setState(() {
-                    scoreKeeper.add(Icon(Icons.check, color: Colors.green,),);
-                  });
-                } else{
-                  setState(() {
-                    scoreKeeper.add(Icon(Icons.cancel, color: Colors.red,),);
-                  });
-                }
-                changeQuestionNumber();
-              },
+                checkAnswer(true);
+              }
             ),
           ),
         ),
@@ -103,18 +121,8 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                bool correctAnswer = quizBrain.getQuestionAnswer();
-                if (correctAnswer == false) {
-                  setState(() {
-                    scoreKeeper.add(Icon(Icons.cancel, color: Colors.red,),);
-                  });
-                } else{
-                  setState(() {
-                    scoreKeeper.add(Icon(Icons.check, color: Colors.green,),);
-                  });
+                checkAnswer(false);
                 }
-                changeQuestionNumber();
-              },
             ),
           ),
         ),
