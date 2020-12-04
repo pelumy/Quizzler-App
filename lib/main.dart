@@ -33,17 +33,22 @@ class _QuizPageState extends State<QuizPage> {
 
   List<Icon> scoreKeeper = [];
   void checkAnswer(bool userPickedAnswer) {
-    int questionNumber = quizBrain.getQuestionNumber();
-    if (questionNumber == quizBrain.getNumberOfQuestions()) {
-      // The easiest way for creating RFlutter Alert
-      _onBasicAlertPressed(context) {
-        Alert(
-          context: context,
-          title: "Game Ended",
-          desc: "You have reached the end of the quiz.",
-        ).show();
-      }
-      questionNumber = 0;
+    if (quizBrain.isFinished() == true) {
+      //TODO Step 4 Part A - show an alert using rFlutter_alert,
+
+      //This is the code for the basic alert from the docs for rFlutter Alert:
+      //Modified for our purposes:
+      Alert(
+        context: context,
+        title: 'Finished!',
+        desc: 'You\'ve reached the end of the quiz.',
+      ).show();
+
+      //TODO Step 4 Part C - reset the questionNumber,
+      quizBrain.reset();
+
+      //TODO Step 4 Part D - empty out the scoreKeeper.
+      scoreKeeper = [];
     }else {
       bool correctAnswer = quizBrain.getQuestionAnswer();
       if (userPickedAnswer == correctAnswer) {
